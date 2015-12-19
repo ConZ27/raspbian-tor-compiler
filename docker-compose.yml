@@ -1,0 +1,12 @@
+tor:
+  image: conz27/raspbian-tor-compiler
+  command: >
+      bash -c '
+      cd /debian-packages &&
+      apt-get update &&
+      apt-get source tor &&
+      cd $(find $PWD -maxdepth 1 -type d -name "tor-*") &&
+      debuild -eDEB_BUILD_OPTIONS="parallel=$(grep -c ^processor /proc/cpuinfo) nocheck" -rfakeroot -uc -us'
+  volumes:
+    - .:/debian-packages
+    - /usr/bin/qemu-arm-static:/usr/bin/qemu-arm-static
